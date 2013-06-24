@@ -21,7 +21,7 @@ module Guard
       @asset_paths.each { |p| @sprockets.append_path(p) }
       @root_file.each { |f| @sprockets.append_path(Pathname.new(f).dirname) }
 
-      if @options.delete(:minify)
+      if @options[:minify] == true
         begin
           require 'uglifier'
           @sprockets.js_compressor = ::Uglifier.new
