@@ -30,6 +30,14 @@ module Guard
           UI.error "minify: Uglifier cannot be loaded. No compression will be used.\nPlease include 'uglifier' in your Gemfile."
           UI.debug ex.message
         end
+        begin
+          require 'sass-rails'
+          @sprockets.css_compressor = ::Sass::Rails::CssCompressor.new
+          UI.info 'Sprockets will compress css output.'
+        rescue LoadError => ex
+          UI.error "minify: Css compressor cannot be loaded. No compression will be used.\nPlease include 'sass-rails' in your Gemfile."
+          UI.debug ex.message
+        end        
       end
     end
 
