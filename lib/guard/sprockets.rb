@@ -2,8 +2,6 @@ require 'guard'
 require 'guard/guard'
 
 require 'sprockets'
-require 'sprockets-sass'
-require 'sass'
 require 'execjs'
 
 module Guard
@@ -19,8 +17,19 @@ module Guard
       @destination = @options[:destination] || 'public/javascripts'
       @root_file   = Array(@options[:root_file])
 
+      # require any gems we may need (i.e. bourbon)
+      if @options[:require_gems]
+        @options[:require_gems].each do |g|
+          require g
+        end
+      end 
+
       @sprockets = ::Sprockets::Environment.new
-      @sprockets.append_path "#{Gem.loaded_specs['compass'].full_gem_path}/frameworks/compass/stylesheets"
+
+      if @options[:require_gems].include?('compass')
+        @sprockets.append_path "#{Gem.loaded_specs['compass'].full_gem_path}/frameworks/compass/stylesheets"
+      end
+  
       @asset_paths.each { |p| @sprockets.append_path(p) }
       @root_file.each { |f| @sprockets.append_path(Pathname.new(f).dirname) }
 
