@@ -20,7 +20,6 @@ module Guard
       @root_file   = Array(@options[:root_file])
 
       @sprockets = ::Sprockets::Environment.new
-      puts "#{Gem.loaded_specs['compass'].full_gem_path}/frameworks/compass/stylesheets"
       @sprockets.append_path "#{Gem.loaded_specs['compass'].full_gem_path}/frameworks/compass/stylesheets"
       @asset_paths.each { |p| @sprockets.append_path(p) }
       @root_file.each { |f| @sprockets.append_path(Pathname.new(f).dirname) }
